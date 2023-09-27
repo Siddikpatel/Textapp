@@ -3,12 +3,9 @@ import React, { useState } from "react";
 export default function TextForm(props) {
 
 
-  const [startDate, setStartDate] = useState(null);
-  const [wordPerMinute, setWordPerMinute] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
   const [text, setText] = useState('');
-  const [totalChars, setTotalChars] = useState(0);
-  const [totalWords, setTotalWords] = useState(0);
-  const [totalSentences, setTotalSentences] = useState(0);
+
   let uppBtn = document.getElementById("up");
   let lowBtn = document.getElementById("low");
   let clrBtn = document.getElementById("clr");
@@ -35,27 +32,12 @@ export default function TextForm(props) {
   };
 
   const handleChange = (event) => {
-    const newText = event.target.value;
+    const newText = event.target.value.replaceAll(/\s+/g, " ");
+    setText(newText);
 
-    if (newText.length === 0) {
-      setStartDate(null);
-    } else if (startDate === null) {
-      setStartDate(new Date())
-    }
-
-    setText(event.target.value);
-
-    const totalWords = newText.trim().split(" ").filter((val) => val && val.match(/[a-zA-Z0-9]+/g)).length;
-
-    if (startDate) {
-      const minutesPassed = (new Date().getTime() - startDate.getTime()) / (60 * 1000);
-      console.log(minutesPassed)
-      setWordPerMinute(Math.round(totalWords / minutesPassed));
-    }
-
-    setTotalWords(totalWords);
-    setTotalSentences(newText.trim().split(/[.?!]/g).filter((val) => val && val.match(/[a-zA-Z0-9]+/g)).length);
-    setTotalChars(text.trim().length);
+    if (newText.length === 0 || startDate === null) {
+      setStartDate(new Date());
+    }  
   };
 
   const clearText = () => {
@@ -72,6 +54,21 @@ export default function TextForm(props) {
     }
     // props.showAlert("Text Copied", "success");
   };
+
+  let totalChars = text.trim().replace(/\s+/g, "").length;
+
+  let totalWords = text
+      .trim()
+      .split(" ")
+      .filter((val) => val.match(/[a-zA-Z0-9]+/g)).length;
+
+  let totalSentences = text
+      .trim()
+      .split(/[.?!]/g)
+      .filter((val) => val.match(/[a-zA-Z0-9]+/g)).length;
+  
+  let wpm = Math.round((totalChars / 5)/(((new Date().getTime() - startDate.getTime()) /1000) /60));
+  
 
   return (
     <>
@@ -113,8 +110,9 @@ export default function TextForm(props) {
             {totalWords} words, {totalChars} characters
           </p>
           <p>{totalSentences} sentences</p>
-          <p>{wordPerMinute} words per minute</p>
-          <h2>Preview</h2>
+          <p>{wpm} words per minute</p>
+
+          {/* <h2>Preview</h2>
           <textarea
             className="form-control my-3"
             readonly
@@ -123,7 +121,8 @@ export default function TextForm(props) {
               color: props.mode === "dark" ? "#ffffff" : "#000000"
             }}
             rows={8}
-            value={text.trim()} ></textarea>
+            value={text.trim()} ></textarea> */}
+            
         </div>
       </div>
     </>

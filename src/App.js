@@ -26,9 +26,9 @@ function App() {
       setAlert(null)
     }, 3000);
   }
-  
+
   const toggleMode = () => {
-    if(mode === 'light') {
+    if (mode === 'light') {
       setMode("dark");
       document.body.style.backgroundColor = '#000000';
       // showAlert("Dark Mode has been enabled!", "success");
@@ -50,16 +50,16 @@ function App() {
 
   return (
     <>
-    <Router>
-    <Navbar title="Text Editor" aboutText="About" toggleMode={toggleMode} mode={mode}/>
-    <Alert alert={alert}/>
-    <div className="container my-3">
-      <Routes>
-        <Route path="/about" element={<About/>}/>
-        <Route path="/" element={<TextForm heading="Enter your text here" mode={mode} showAlert={showAlert}/>}/>
-      </Routes> 
-    </div>
-    </Router>  
+      <Router basename='Textapp'>
+        <Navbar title="Text Editor" aboutText="About" toggleMode={toggleMode} mode={mode} />
+        <Alert alert={alert} />
+        <div className="container my-3">
+          <Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/" element={<TextForm heading="Enter your text here" mode={mode} showAlert={showAlert} />} />
+          </Routes>
+        </div>
+      </Router>
     </>
   );
 }

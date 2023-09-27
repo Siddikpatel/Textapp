@@ -1,7 +1,12 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 
 export default function TextForm(props) {
+
   const [text, setText] = useState(String);
+  let uppBtn = document.getElementById("up");
+  let lowBtn = document.getElementById("low");
+  let clrBtn = document.getElementById("clr");
+  let cpyBtn = document.getElementById("cpy");
   let totalChars = text.trim().replace(/\s+/g, "");
   let totalWords = text
     .trim()
@@ -13,11 +18,23 @@ export default function TextForm(props) {
     .filter((val) => val.match(/[a-zA-Z0-9]+/g));
 
   const toUpperCase = () => {
-    setText(text.toUpperCase());
+    if(text.length > 0) {
+      setText(text.toUpperCase());
+      uppBtn.innerText = "Success!";
+      setTimeout(() => {
+        uppBtn.innerText = "Uppercase";
+      }, 2600);
+    }    
   };
 
   const toLowerCase = () => {
-    setText(text.toLowerCase());
+    if(text.length > 0) {
+      setText(text.toLowerCase());
+      lowBtn.innerText = "Success!";
+      setTimeout(() => {
+        lowBtn.innerText = "Lowercase";
+      }, 2600);
+    }    
   };
 
   const handleChange = (event) => {
@@ -30,22 +47,20 @@ export default function TextForm(props) {
   };
 
   const copyText = () => {
-    navigator.clipboard.writeText(text);
-    props.showAlert("Text Copied", "success");
+    if(text.length > 0) {
+      navigator.clipboard.writeText(text);
+      cpyBtn.innerText = "Text Copied!";
+      setTimeout(() => {
+        cpyBtn.innerText = "Copy Text";
+      }, 2600);
+    }  
+    // props.showAlert("Text Copied", "success");
   };
 
   return (
     <>
-      <div
-        className="rounded-3"
-        style={{
-          backgroundColor: props.mode === "dark" ? "#171313" : "#ffe6b3",
-          userSelect: "none",
-          color: props.mode === "dark" ? "#FFFFFF" : "#000000",
-        }}
-      >
-        <div className="container">
-          <h1>{props.heading}</h1>
+        <div className="container" style={{color: props.mode==="dark"?"#ffffff":"#000000"}}>
+          <h2>{props.heading}</h2>
           <div className="form-group my-3">
             <textarea
               className="form-control"
@@ -54,27 +69,30 @@ export default function TextForm(props) {
               value={text}
               onChange={handleChange}
               style={{
-                backgroundColor: props.mode === "dark" ? "#383737" : "#ffffff",
-                color: props.mode === "light" ? "#000000" : "#ffffff",
-              }}
+                backgroundColor: props.mode==="dark" ? "#212529" : "#ffffff",
+                color: props.mode==="dark" ? "#ffffff" : "#000000"
+              }
+              }
             ></textarea>
           </div>
-          <button className="btn btn-primary my-2 mx-1" onClick={toUpperCase}>
-            Uppercase
-          </button>
-          <button className="btn btn-primary mx-1" onClick={toLowerCase}>
-            Lowercase
-          </button>
-          <button className="btn btn-primary mx-1" onClick={copyText}>
-            Copy Text
-          </button>
-          <button className="btn btn-danger mx-1" onClick={clearText}>
-            Clear
-          </button>
-        </div>
-
-        <div className="container">
-          <h1>Your text summary</h1>
+          <div className="my-2">
+            <button className="btn btn-info" id="up" onClick={toUpperCase}>
+              Uppercase
+            </button>
+            &nbsp;
+            <button className="btn btn-info mx-1" id="low"onClick={toLowerCase}>
+              Lowercase
+            </button>
+            <button className="btn btn-info mx-1" id="cpy" onClick={copyText}>
+              Copy Text
+            </button>
+            <button className="btn btn-danger mx-1" id="clr" onClick={clearText}>
+              Clear
+            </button>
+          </div>
+          
+        <div className="my-1" >
+          <h2>Your text summary</h2>
           <p>
             {totalWords.length} words, {totalChars.length} characters
           </p>
@@ -83,7 +101,7 @@ export default function TextForm(props) {
           <h2>Preview</h2>
           <p>{text.trim()}</p>
         </div>
-      </div>
+        </div>
     </>
   );
 }

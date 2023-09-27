@@ -24,39 +24,39 @@ function App() {
     })
     setTimeout(() => {
       setAlert(null)
-    }, 2500);
+    }, 3000);
   }
   
   const toggleMode = () => {
     if(mode === 'light') {
       setMode("dark");
-      document.body.style.backgroundColor = '#383737';
-      showAlert("Dark Mode has been enabled!", "success");
-      document.title = "Textutils - Dark Mode"
+      document.body.style.backgroundColor = '#000000';
+      // showAlert("Dark Mode has been enabled!", "success");
+      document.title = "Text Editor - Dark Mode";
       setTimeout(() => {
-        document.title = "Textutils - Home"
-      }, 2500);
+        document.title = "Text Editor - Home";
+      }, 3000);
     }
     else {
       setMode("light");
-      document.body.style.backgroundColor = '#ffe6b3';
-      showAlert("Light Mode has been enabled!", "success");
-      document.title = "Textutils - Light Mode"
+      document.body.style.backgroundColor = '#ffffff';
+      // showAlert("Light Mode has been enabled!", "success");
+      document.title = "Text Editor - Light Mode";
       setTimeout(() => {
-        document.title = "Textutils - Home"
-      }, 2500);
+        document.title = "Text Editor - Home";
+      }, 3000);
     }
   }
 
   return (
     <>
     <Router>
-    <Navbar title="TextUtility" aboutText="About" toggleMode={toggleMode} mode={mode}/>
+    <Navbar title="Text Editor" aboutText="About" toggleMode={toggleMode} mode={mode}/>
     <Alert alert={alert}/>
     <div className="container my-3">
       <Routes>
         <Route path="/about" element={<About/>}/>
-        <Route path="/" element={<TextForm heading="Enter the text to analyze" mode={mode} showAlert={showAlert}/>}/>
+        <Route path="/" element={<TextForm heading="Enter your text here" mode={mode} showAlert={showAlert}/>}/>
       </Routes> 
     </div>
     </Router>  
